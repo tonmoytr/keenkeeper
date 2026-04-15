@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 const sen = Sen({
-  weight: "400",
+  weight: ["400", "700", "800"],
   subsets: ["latin"],
 });
 
