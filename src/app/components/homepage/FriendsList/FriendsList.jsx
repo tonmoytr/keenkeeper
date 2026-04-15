@@ -1,13 +1,14 @@
+import { getFriends } from "@/lib/utils/getFriends";
 import FriendCard from "../../ui/FriendCard";
 
-async function getFriends() {
-  const res = await fetch("http://localhost:3000/data/friends.json", {
-    cache: "no-store",
-  });
+// async function getFriends() {
+//   const res = await fetch("http://localhost:3000/data/friends.json", {
+//     cache: "no-store",
+//   });
 
-  if (!res.ok) return [];
-  return res.json();
-}
+//   if (!res.ok) return [];
+//   return res.json();
+// }
 
 export default async function FriendsList() {
   const friends = await getFriends();
