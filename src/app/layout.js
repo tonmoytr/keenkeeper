@@ -3,6 +3,8 @@ import "./globals.css";
 import Navbar from "./components/shared/Navbar/Navbar";
 import Footer from "./components/shared/Footer/Footer";
 import { ToastContainer } from "react-toastify";
+import { TimelineProvider } from "@/lib/context/TimelineContext";
+import AppProvider from "@/lib/providers/AppProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,11 +34,12 @@ export default function RootLayout({ children }) {
       className={` ${sen.className} h-full antialiased`}
     >
       <body>
-        <Navbar />
-        {children}
-        <Footer />
+        <AppProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </AppProvider>
       </body>
-      <ToastContainer />
     </html>
   );
 }

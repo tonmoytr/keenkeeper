@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import { TimelineContext } from "@/lib/context/TimelineContext";
+import { useContext } from "react";
 // Move icon imports to the Client Component
 import {
   HiOutlinePhone,
@@ -16,10 +17,9 @@ const icons = {
 };
 
 const ActionButtons = ({ label, friendName, type }) => {
-  const [entryTimeline, setEntryTimeline] = useState([]);
-
   // Select the correct icon based on the 'type' string
   const Icon = icons[type];
+  const { addEntry } = useContext(TimelineContext);
 
   const handleTimelineEntry = () => {
     const entry = {
@@ -29,9 +29,9 @@ const ActionButtons = ({ label, friendName, type }) => {
       date: new Date().toLocaleString(),
     };
     // console.log("Timeline entry added:", entry);
-    toast.success(`${type} with ${friendName} added to timeline!`);
     // This is where your Context API logic will live!
-    setEntryTimeline()
+    addEntry(friendName, type);
+    toast.success(`${type} with ${friendName} added to timeline!`);
   };
 
   return (
