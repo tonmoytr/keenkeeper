@@ -12,6 +12,13 @@ import {
 import { FiEdit3 } from "react-icons/fi";
 import Image from "next/image";
 import { getFriends } from "@/lib/utils/getFriends";
+import ActionButtons from "@/app/components/ui/ActionButtons";
+
+const actionTypes = [
+  { label: "Call", type: "Call" },
+  { label: "Text", type: "Text" },
+  { label: "Video", type: "Video" },
+];
 
 const FriendDetailComponent = async ({ params }) => {
   const { id } = await params;
@@ -151,35 +158,14 @@ const FriendDetailComponent = async ({ params }) => {
                 Quick Check-In
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <button className="cursor-pointer flex flex-col items-center gap-4 p-6 border-[1.5px] border-gray-100 rounded-2xl hover:border-blue-400 hover:bg-blue-50/50 transition-all group">
-                  <div className="p-4 bg-gray-50 rounded-2xl group-hover:bg-white group-hover:shadow-md transition-all">
-                    <HiOutlinePhone
-                      size={28}
-                      className="text-slate-700 group-hover:text-blue-600"
-                    />
-                  </div>
-                  <span className="font-bold text-gray-700">Call</span>
-                </button>
-
-                <button className="cursor-pointer flex flex-col items-center gap-4 p-6 border-[1.5px] border-gray-100 rounded-2xl hover:border-blue-400 hover:bg-blue-50/50 transition-all group">
-                  <div className="p-4 bg-gray-50 rounded-2xl group-hover:bg-white group-hover:shadow-md transition-all">
-                    <HiOutlineChatBubbleLeftEllipsis
-                      size={28}
-                      className="text-slate-700 group-hover:text-blue-600"
-                    />
-                  </div>
-                  <span className="font-bold text-gray-700">Text</span>
-                </button>
-
-                <button className=" cursor-pointer flex flex-col items-center gap-4 p-6 border-[1.5px] border-gray-100 rounded-2xl hover:border-blue-400 hover:bg-blue-50/50 transition-all group">
-                  <div className="p-4 bg-gray-50 rounded-2xl group-hover:bg-white group-hover:shadow-md transition-all">
-                    <HiOutlineVideoCamera
-                      size={28}
-                      className="text-slate-700 group-hover:text-blue-600"
-                    />
-                  </div>
-                  <span className="font-bold text-gray-700">Video</span>
-                </button>
+                {actionTypes.map((action) => (
+                  <ActionButtons
+                    key={action.type}
+                    label={action.label}
+                    type={action.type}
+                    friendName={friend.name}
+                  />
+                ))}
               </div>
             </div>
           </div>
