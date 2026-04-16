@@ -1,5 +1,9 @@
 export async function getFriends() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    (process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "https://keenkeeper-trt.vercel.app");
 
   try {
     const res = await fetch(`${baseUrl}/data/friends.json`, {
@@ -10,7 +14,7 @@ export async function getFriends() {
 
     return await res.json();
   } catch (error) {
-    console.error(error);
+    console.error("Fetch Error:", error);
     return [];
   }
 }
