@@ -1,5 +1,3 @@
-"use client";
-
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import Link from "next/link";
 import { HiOutlineHome } from "react-icons/hi";
@@ -7,7 +5,6 @@ import { HiOutlineHome } from "react-icons/hi";
 export default function NotFound() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4">
-      {/* Wrapper with explicit height */}
       <div className="w-full max-w-sm h-64 md:h-80 mx-auto">
         <DotLottieReact src="/assets/animation/404-error.json" loop autoplay />
       </div>
