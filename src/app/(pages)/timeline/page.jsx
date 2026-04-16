@@ -2,18 +2,31 @@
 
 import { TimelineContext } from "@/lib/context/TimelineContext";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { HiOutlineSearch } from "react-icons/hi";
+import { RiArrowDownWideFill } from "react-icons/ri";
 import {
   HiOutlinePhone,
   HiOutlineChatBubbleLeftEllipsis,
   HiOutlineVideoCamera,
   HiOutlineUserGroup,
+  HiOutlineAdjustmentsHorizontal,
 } from "react-icons/hi2";
 
 const TimelinePage = () => {
   const { timelineData } = useContext(TimelineContext);
 
-  // Icon mapping for different interaction types
+  const [filterType, setFilterType] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredTimelineData = timelineData.filter((entry) => {
+    const isMatch = filterType === "All" || entry.type === filterType;
+    const searchValue = entry.name
+      .toLowerCase()
+      .includes(searchQuery.toLocaleLowerCase());
+    return isMatch && searchValue;
+  });
+
   const iconMap = {
     Call: <HiOutlinePhone className="text-blue-500" size={24} />,
     Text: (
@@ -30,11 +43,74 @@ const TimelinePage = () => {
           <h1 className="text-4xl font-black text-slate-800 tracking-tight">
             Timeline
           </h1>
+          {timelineData.length > 0 && (
+            <div className="mt-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
+              {/* Left: Type Filter Dropdown */}
+              <div className="relative w-full md:w-64">
+                <div className="dropdown dropdown-bottom">
+                  <div
+                    tabIndex={0}
+                    role="button"
+                    className="btn m-1 bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                  >
+                    {/* IMPROVEMENT: Show the current filter name */}
+                    {filterType === "All"
+                      ? "Filter Timeline"
+                      : `Show: ${filterType}`}
+                    <div className="ps-6 text-slate-600">
+                      <RiArrowDownWideFill size={20} />
+                    </div>
+                  </div>
+
+                  <ul
+                    tabIndex={0} // Changed from -1 to 0 so it stays focusable
+                    className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow-sm border border-slate-100"
+                  >
+                    {/* FIXED: Using onClick to update the state */}
+                    <li>
+                      <button onClick={() => setFilterType("All")}>
+                        All Interactions
+                      </button>
+                    </li>
+                    <li>
+                      <button onClick={() => setFilterType("Call")}>
+                        Call
+                      </button>
+                    </li>
+                    <li>
+                      <button onClick={() => setFilterType("Text")}>
+                        Text
+                      </button>
+                    </li>
+                    <li>
+                      <button onClick={() => setFilterType("Video")}>
+                        Video
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Right: Search by Name */}
+              <div className="relative w-full md:w-80">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                  <HiOutlineSearch size={20} />
+                </div>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search by friend name..."
+                  className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-sm shadow-sm focus:ring-2 focus:ring-blue-500 outline-none text-slate-600 placeholder:text-slate-400 font-medium"
+                />
+              </div>
+            </div>
+          )}
         </header>
 
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col  items-center">
           {timelineData.length === 0 ? (
-            <main className="flex flex-col items-center justify-center py-10">
+            <main className="flex flex-col  items-center justify-center py-10">
               <div className="w-full max-w-sm h-64 md:h-80 mx-auto">
                 <DotLottieReact
                   src="/assets/animation/nothing.json"
@@ -50,8 +126,8 @@ const TimelinePage = () => {
               </p>
             </main>
           ) : (
-            <div className="w-full flex flex-col gap-8 items-center">
-              {timelineData.map((entry) => {
+            <div className="w-full flex flex-col  gap-8 items-center">
+              {filteredTimelineData.map((entry) => {
                 return (
                   <div
                     key={entry.id}
@@ -70,7 +146,7 @@ const TimelinePage = () => {
                           <h4 className="text-xl font-bold text-slate-800">
                             {entry.type}
                             <span className="font-medium text-slate-400 ml-2">
-                              with{" "}
+                              with
                               <span className="text-teal-800">
                                 {entry.name}
                               </span>
