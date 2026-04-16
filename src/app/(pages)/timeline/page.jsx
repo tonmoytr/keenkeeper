@@ -5,6 +5,7 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { useContext, useState } from "react";
 import { HiOutlineSearch } from "react-icons/hi";
 import { RiArrowDownWideFill } from "react-icons/ri";
+import { FaArrowDownUpAcrossLine } from "react-icons/fa6";
 import {
   HiOutlinePhone,
   HiOutlineChatBubbleLeftEllipsis,
@@ -18,14 +19,23 @@ const TimelinePage = () => {
 
   const [filterType, setFilterType] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState("newest");
 
-  const filteredTimelineData = timelineData.filter((entry) => {
-    const isMatch = filterType === "All" || entry.type === filterType;
-    const searchValue = entry.name
-      .toLowerCase()
-      .includes(searchQuery.toLocaleLowerCase());
-    return isMatch && searchValue;
-  });
+  const filteredTimelineData = timelineData
+    .filter((entry) => {
+      const isMatch = filterType === "All" || entry.type === filterType;
+      const searchValue = entry.name
+        .toLowerCase()
+        .includes(searchQuery.toLocaleLowerCase());
+      return isMatch && searchValue;
+    })
+    .sort((a, b) => {
+      if (sortOrder === "newest") {
+        return b.id - a.id;
+      } else {
+        return a.id - b.id;
+      }
+    });
 
   const iconMap = {
     Call: <HiOutlinePhone className="text-blue-500" size={24} />,
@@ -46,7 +56,7 @@ const TimelinePage = () => {
           {timelineData.length > 0 && (
             <div className="mt-8 flex flex-col md:flex-row justify-between items-center gap-4 animate-in fade-in slide-in-from-top-4 duration-500">
               {/* Left: Type Filter Dropdown */}
-              <div className="relative w-full md:w-64">
+              <div className="relative w-full md:w-80 flex items-center gap-4">
                 <div className="dropdown dropdown-bottom">
                   <div
                     tabIndex={0}
@@ -89,6 +99,15 @@ const TimelinePage = () => {
                     </li>
                   </ul>
                 </div>
+                <button
+                  onClick={() =>
+                    setSortOrder(sortOrder === "newest" ? "oldest" : "newest")
+                  }
+                  className="btn m-1 bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                >
+                  {sortOrder === "newest" ? "Latest" : "Oldest"}{" "}
+                  <FaArrowDownUpAcrossLine  className="text-slate-600 ms-1"/>
+                </button>
               </div>
 
               {/* Right: Search by Name */}
