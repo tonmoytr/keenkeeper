@@ -146,7 +146,7 @@ const TimelinePage = () => {
                           <h4 className="text-xl font-bold text-slate-800">
                             {entry.type}
                             <span className="font-medium text-slate-400 ml-2">
-                              with 
+                              with
                               <span className="text-teal-800 ps-2">
                                 {entry.name}
                               </span>
